@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kill `ps | awk '/[s]s-server/{print $1}'`
