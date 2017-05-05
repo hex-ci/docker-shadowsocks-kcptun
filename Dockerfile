@@ -5,6 +5,9 @@ MAINTAINER Hex "hex@codeigniter.org.cn"
 ARG SS_VER=3.0.6
 ARG SS_URL=https://github.com/shadowsocks/shadowsocks-libev/releases/download/v$SS_VER/shadowsocks-libev-$SS_VER.tar.gz
 
+ARG KT_VER=20170329
+ARG KT_URL=https://github.com/xtaci/kcptun/releases/download/v$KT_VER/kcptun-linux-amd64-$KT_VER.tar.gz
+
 RUN set -ex && \
     apk add --no-cache s6 && \
     apk add --no-cache --virtual .build-deps \
@@ -33,15 +36,26 @@ RUN set -ex && \
             | sort -u \
     )" && \
     apk add --no-cache --virtual .run-deps $runDeps && \
-    apk del .build-deps && \
-    rm -rf /tmp/*
+    rm -rf /tmp/* && \
 
+# kcptun
+    cd /tmp && \
+    curl -sSL $KT_URL | tar xz --strip 1 && \
+    mv server_linux_amd64 /usr/bin/kcptun && \
+    rm -rf /tmp/* && \
+
+# strip
+    strip -s /usr/bin/ss-server /usr/bin/kcptun && \
+
+# clean
+    apk del .build-deps && \
+    rm -rf ss-local ss-manager ss-nat ss-redir ss-tunnel
 
 COPY s6/ /etc/s6/
 
 RUN chmod -R +x /etc/s6/* \
     && chmod +x /etc/s6/.s6-svscan/finish
 
-EXPOSE $SERVER_PORT/tcp $SERVER_PORT/udp
+EXPOSE 8388/tcp 29900/udp
 
 ENTRYPOINT ["/bin/s6-svscan", "/etc/s6"]
