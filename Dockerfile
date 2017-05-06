@@ -45,11 +45,30 @@ RUN set -ex && \
     rm -rf /tmp/* && \
 
 # strip
-    strip -s /usr/bin/ss-server /usr/bin/kcptun && \
+    strip -s /usr/bin/ss-server \
+             /usr/bin/kcptun \
+             /usr/lib/libev.so.4.0.0 \
+             /usr/lib/libmbedcrypto.so.2.4.2 \
+             /usr/lib/libmbedtls.so.2.4.2 \
+             /usr/lib/libmbedx509.so.2.4.2 \
+             /usr/lib/libpcre.so.1.2.7 \
+             /usr/lib/libpcreposix.so.0.0.4 \
+             /usr/lib/libsodium.so.18.1.1 \
+             /usr/lib/libudns.so.0 \
+             /usr/lib/pkgconfig \
+             /lib/libexecline.so.2.2.0.0 \
+             /lib/libs6.so.2.4.0.0 \
+             /lib/libskarnet.so.2.4.0.2 && \
 
 # clean
     apk del .build-deps && \
-    rm -rf ss-local ss-manager ss-nat ss-redir ss-tunnel
+    rm -rf /usr/bin/ss-local \
+           /usr/bin/ss-manager \
+           /usr/bin/ss-nat \
+           /usr/bin/ss-redir \
+           /usr/bin/ss-tunnel \
+           /usr/lib/libshadowsocks-libev.a \
+           /usr/include/*
 
 COPY s6/ /etc/s6/
 
