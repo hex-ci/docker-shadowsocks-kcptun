@@ -40,7 +40,7 @@ RUN set -ex && \
 
 # kcptun
     cd /tmp && \
-    curl -sSL $KT_URL | tar xz --strip 1 && \
+    curl -sSL $KT_URL | tar xz && \
     mv server_linux_amd64 /usr/bin/kcptun && \
     rm -rf /tmp/* && \
 
