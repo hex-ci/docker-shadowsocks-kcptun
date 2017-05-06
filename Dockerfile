@@ -55,7 +55,6 @@ RUN set -ex && \
              /usr/lib/libpcreposix.so.0.0.4 \
              /usr/lib/libsodium.so.18.1.1 \
              /usr/lib/libudns.so.0 \
-             /usr/lib/pkgconfig \
              /lib/libexecline.so.2.2.0.0 \
              /lib/libs6.so.2.4.0.0 \
              /lib/libskarnet.so.2.4.0.2 && \
